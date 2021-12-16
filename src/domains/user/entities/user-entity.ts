@@ -1,32 +1,91 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
-import { v4 as uuid } from "uuid";
+import { v4 as uuidV4 } from "uuid";
 import { UserStatusEnum } from "../enums/user-status-enum";
 
-@Entity("users")
-class UserEntity {
-  @PrimaryColumn()
-  readonly id: string;
+export class UserEntity implements UserEntity.BaseFields {
+  private _id!: string;
+  private _name: string;
+  private _email: string;
+  private _status: UserStatusEnum;
+  private _created_at: Date;
+  private _updated_at: Date;
 
-  @Column()
-  name: string;
+  get id() {
+    return this._id;
+  }
 
-  @Column()
-  email: string;
+  get name() {
+    return this._name;
+  }
 
-  @Column()
-  status: UserStatusEnum;
+  get email() {
+    return this._email;
+  }
 
-  @CreateDateColumn()
-  created_at: Date;
+  get status() {
+    return this._status;
+  }
 
-  @CreateDateColumn()
-  updated_at: Date;
+  get created_at() {
+    return this._created_at;
+  }
 
-  constructor() {
-    if (!this.id) {
-      this.id = uuid();
+  set created_at(date: Date) {
+    this._created_at = date;
+  }
+
+  get updated_at() {
+    return this._updated_at;
+  }
+
+  set updated_at(date: Date) {
+    this._updated_at = date;
+  }
+
+  get data() {
+    return {
+      id: this._id,
+      name: this._name,
+      email: this._email,
+      status: this._status,
+      created_at: this._created_at,
+      updated_at: this._updated_at,
+    };
+  }
+
+  constructor(init: UserEntity.Create) {
+    if (init.id) {
+      this._id = init.id || uuidV4();
     }
+
+    this._name = init.name;
+    this._email = init.email;
+    this._status = init.status ?? UserStatusEnum.REGISTERED;
+    this._created_at = init.created_at ?? new Date(Date.now());
+    this._updated_at = init.created_at ?? new Date(Date.now());
   }
 }
 
-export { UserEntity };
+export namespace UserEntity {
+  export interface BaseFields {
+    id: string;
+    name: string;
+    email: string;
+    status: UserStatusEnum;
+    created_at: Date;
+    updated_at: Date;
+  }
+
+  type Modify<T, R> = Omit<T, keyof R> & R;
+
+  export type Create = Modify<
+    BaseFields,
+    {
+      id?: string;
+      name?: string;
+      email?: string;
+      status?: UserStatusEnum;
+      created_at?: Date;
+      updated_at?: Date;
+    }
+  >;
+}

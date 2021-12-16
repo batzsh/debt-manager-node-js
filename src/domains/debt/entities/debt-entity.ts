@@ -1,50 +1,87 @@
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryColumn,
-  JoinColumn,
-  CreateDateColumn,
-} from "typeorm";
-import { v4 as uuid } from "uuid";
-import { UserEntity } from "../../user/entities/user-entity";
+import { v4 as uuidV4 } from "uuid";
 import { DebtStatusEnum } from "../enums/debt-status-enum";
 
-@Entity("debts")
-class DebtEntity {
-  @PrimaryColumn()
-  readonly id: string;
+export class DebtEntity implements DebtEntity.BaseFields {
+  private _id!: string;
+  private _description: string;
+  private _amount: number;
+  private _status: DebtStatusEnum;
+  private _created_at: Date;
+  private _updated_at: Date;
 
-  @Column()
-  user_id: string;
+  get id() {
+    return this._id;
+  }
 
-  @ManyToOne(() => UserEntity)
-  @JoinColumn({ name: "user_id" })
-  user: UserEntity;
+  get description() {
+    return this._description;
+  }
 
-  @Column()
-  description: string;
+  get amount() {
+    return this._amount;
+  }
 
-  @Column()
-  amount: number;
+  get status() {
+    return this._status;
+  }
 
-  @Column()
-  status: DebtStatusEnum;
+  get created_at() {
+    return this._created_at;
+  }
 
-  @CreateDateColumn()
-  due_date: Date;
+  get updated_at() {
+    return this._updated_at;
+  }
 
-  @CreateDateColumn()
-  created_at: Date;
+  set updated_at(date: Date) {
+    this._updated_at = date;
+  }
 
-  @CreateDateColumn()
-  updated_at: Date;
+  get data() {
+    return {
+      id: this._id,
+      description: this._description,
+      amount: this._amount,
+      status: this._status,
+      created_at: this._created_at,
+      updated_at: this._updated_at,
+    };
+  }
 
-  constructor() {
-    if (!this.id) {
-      this.id = uuid();
+  constructor(init: DebtEntity.Create) {
+    if (init.id) {
+      this._id = init.id || uuidV4();
     }
+
+    this._description = init.description;
+    this._amount = init.amount;
+    this._status = init.status ?? DebtStatusEnum.PENDING;
+    this._created_at = init.created_at ?? new Date(Date.now());
+    this._updated_at = init.created_at ?? new Date(Date.now());
   }
 }
 
-export { DebtEntity };
+export namespace DebtEntity {
+  export interface BaseFields {
+    id: string;
+    description: string;
+    amount: number;
+    status: DebtStatusEnum;
+    created_at: Date;
+    updated_at: Date;
+  }
+
+  type Modify<T, R> = Omit<T, keyof R> & R;
+
+  export type Create = Modify<
+    BaseFields,
+    {
+      id?: string;
+      description?: string;
+      amount?: number;
+      status?: DebtStatusEnum;
+      created_at?: Date;
+      updated_at?: Date;
+    }
+  >;
+}
