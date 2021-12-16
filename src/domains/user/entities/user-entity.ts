@@ -1,87 +1,32 @@
-import { v4 as uuidV4 } from "uuid";
+import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
+import { v4 as uuid } from "uuid";
 import { UserStatusEnum } from "../enums/user-status-enum";
 
-export class UserEntity implements UserEntity.BaseFields {
-  private _id!: string;
-  private _name: string;
-  private _email: string;
-  private _status: UserStatusEnum;
-  private _createDate: Date;
-  private _updateDate: Date;
+@Entity("users")
+class UserEntity {
+  @PrimaryColumn()
+  readonly id: string;
 
-  get id() {
-    return this._id;
-  }
+  @Column()
+  name: string;
 
-  get name() {
-    return this._name;
-  }
+  @Column()
+  email: string;
 
-  get email() {
-    return this._email;
-  }
+  @Column()
+  status: UserStatusEnum;
 
-  get status() {
-    return this._status;
-  }
+  @CreateDateColumn()
+  created_at: Date;
 
-  get createDate() {
-    return this._createDate;
-  }
+  @CreateDateColumn()
+  updated_at: Date;
 
-  get updateDate() {
-    return this._updateDate;
-  }
-
-  set updateDate(date: Date) {
-    this._updateDate = date;
-  }
-
-  get data() {
-    return {
-      id: this._id,
-      name: this._name,
-      email: this._email,
-      status: this._status,
-      createDate: this._createDate,
-      updateDate: this._updateDate,
-    };
-  }
-
-  constructor(init: UserEntity.Create) {
-    if (init.id) {
-      this._id = init.id || uuidV4();
+  constructor() {
+    if (!this.id) {
+      this.id = uuid();
     }
-
-    this._name = init.name;
-    this._email = init.email;
-    this._status = init.status ?? UserStatusEnum.REGISTERED;
-    this._createDate = init.createDate ?? new Date(Date.now());
-    this._updateDate = init.createDate ?? new Date(Date.now());
   }
 }
 
-export namespace UserEntity {
-  export interface BaseFields {
-    id: string;
-    name: string;
-    email: string;
-    status: UserStatusEnum;
-    createDate: Date;
-    updateDate: Date;
-  }
-
-  type Modify<T, R> = Omit<T, keyof R> & R;
-
-  export type Create = Modify<
-    BaseFields,
-    {
-      id?: string;
-      name?: string;
-      email?: string;
-      status?: UserStatusEnum;
-      createDate?: Date;
-      updateDate?: Date;
-    }
-  >;
-}
+export { UserEntity };
