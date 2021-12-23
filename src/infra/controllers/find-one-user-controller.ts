@@ -4,7 +4,7 @@ import { UserTypeormEntity } from "../repositories/entities/user-typeorm-entity"
 
 export class FindOneUserController {
   async execute(request: Request, response: Response) {
-    const { id } = request.body;
+    const { id } = request.params;
 
     const usersRepository = getRepository(UserTypeormEntity);
     const user = await usersRepository.findOne({
