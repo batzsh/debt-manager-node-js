@@ -37,13 +37,13 @@ export default class DebtTypeormEntity {
   due_date!: Date;
 
   @CreateDateColumn({
-    name: "created_date",
+    name: "created_at",
     type: "datetime",
     nullable: false,
   })
   created_at!: Date;
 
-  @CreateDateColumn({ name: "updated_date", type: "datetime", nullable: true })
+  @CreateDateColumn({ name: "updated_at", type: "datetime", nullable: true })
   updated_at!: Date;
 
   constructor() {

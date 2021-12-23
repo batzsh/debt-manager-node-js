@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
-import { UserTypeormEntity } from "../repositories/entities/user-typeorm-entity";
+import { UserTypeormEntity } from "../../repositories/entities/user-typeorm-entity";
 
 export class FindOneUserController {
   async execute(request: Request, response: Response) {

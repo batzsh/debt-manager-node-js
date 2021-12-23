@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { CreateUserController } from "../controllers/create-user-controller";
-import { DeleteUserController } from "../controllers/delete-user-controller";
-import { FindAllUsersController } from "../controllers/find-all-users-controller";
-import { FindOneUserController } from "../controllers/find-one-user-controller";
+import { CreateUserController } from "../controllers/user/create-user-controller";
+import { DeleteUserController } from "../controllers/user/delete-user-controller";
+import { FindAllUsersController } from "../controllers/user/find-all-users-controller";
+import { FindOneUserController } from "../controllers/user/find-one-user-controller";
 
 const userRoutes = Router();
 

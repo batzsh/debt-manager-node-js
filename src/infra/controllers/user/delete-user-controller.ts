@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getConnection, getRepository } from "typeorm";
-import { UserTypeormEntity } from "../repositories/entities/user-typeorm-entity";
+import { UserTypeormEntity } from "../../repositories/entities/user-typeorm-entity";
 
 export class DeleteUserController {
   async execute(request: Request, response: Response) {

@@ -1,8 +1,11 @@
 import { v4 as uuidV4 } from "uuid";
+import { UserEntity } from "../../user/entities/user-entity";
 import { DebtStatusEnum } from "../enums/debt-status-enum";
 
 export class DebtEntity implements DebtEntity.BaseFields {
   private _id!: string;
+  private _user_id: string;
+  private _user!: UserEntity.BaseFields;
   private _description: string;
   private _amount: number;
   private _status: DebtStatusEnum;
@@ -11,6 +14,14 @@ export class DebtEntity implements DebtEntity.BaseFields {
 
   get id() {
     return this._id;
+  }
+
+  get user_id() {
+    return this._user_id;
+  }
+
+  get user() {
+    return this._user;
   }
 
   get description() {
@@ -40,6 +51,8 @@ export class DebtEntity implements DebtEntity.BaseFields {
   get data() {
     return {
       id: this._id,
+      user_id: this._user_id,
+      user: this._user,
       description: this._description,
       amount: this._amount,
       status: this._status,
@@ -53,6 +66,8 @@ export class DebtEntity implements DebtEntity.BaseFields {
       this._id = init.id || uuidV4();
     }
 
+    this._user_id = init.user_id;
+    this._user = init.user;
     this._description = init.description;
     this._amount = init.amount;
     this._status = init.status ?? DebtStatusEnum.PENDING;
@@ -64,6 +79,8 @@ export class DebtEntity implements DebtEntity.BaseFields {
 export namespace DebtEntity {
   export interface BaseFields {
     id: string;
+    user_id: string;
+    user: UserEntity.BaseFields;
     description: string;
     amount: number;
     status: DebtStatusEnum;
@@ -77,6 +94,8 @@ export namespace DebtEntity {
     BaseFields,
     {
       id?: string;
+      user_id?: string;
+      user?: UserEntity.BaseFields;
       description?: string;
       amount?: number;
       status?: DebtStatusEnum;
