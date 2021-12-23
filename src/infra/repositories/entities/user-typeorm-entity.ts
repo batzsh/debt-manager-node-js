@@ -6,7 +6,6 @@ import {
   PrimaryColumn,
 } from "typeorm";
 import { v4 as uuid } from "uuid";
-import { UserStatusEnum } from "../../../domains/user/enums/user-status-enum";
 
 @Entity("users")
 class UserTypeormEntity {
@@ -19,14 +18,10 @@ class UserTypeormEntity {
   @Column({ name: "email", type: "varchar", nullable: false })
   email: string;
 
-  @Check(`"status" NOT NULL AND IN ('REGISTERED')`)
-  @Column({ name: "status", type: "varchar", nullable: false })
-  status: UserStatusEnum;
-
-  @CreateDateColumn({ name: "created_at", type: "timestamp", nullable: false })
+  @CreateDateColumn({ name: "created_at", type: "datetime", nullable: false })
   created_at: Date;
 
-  @CreateDateColumn({ name: "updated_at", type: "timestamp", nullable: true })
+  @CreateDateColumn({ name: "updated_at", type: "datetime", nullable: true })
   updated_at: Date;
 
   constructor() {

@@ -26,24 +26,24 @@ export default class DebtTypeormEntity {
   @Column({ name: "description", type: "varchar", nullable: true })
   description?: string;
 
-  @Column({ name: "amount", type: "number", nullable: false })
+  @Column({ name: "amount", type: "float", nullable: false })
   amount!: number;
 
   @Check(`"status" NOT NULL AND IN ('PENDING')`)
   @Column({ name: "status", type: "varchar", nullable: false })
   status!: DebtStatusEnum;
 
-  @CreateDateColumn({ name: "due_date", type: "timestamp", nullable: false })
+  @CreateDateColumn({ name: "due_date", type: "datetime", nullable: false })
   due_date!: Date;
 
   @CreateDateColumn({
     name: "created_date",
-    type: "timestamp",
+    type: "datetime",
     nullable: false,
   })
   created_at!: Date;
 
-  @CreateDateColumn({ name: "updated_date", type: "timestamp", nullable: true })
+  @CreateDateColumn({ name: "updated_date", type: "datetime", nullable: true })
   updated_at!: Date;
 
   constructor() {
