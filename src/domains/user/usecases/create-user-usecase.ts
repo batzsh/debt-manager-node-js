@@ -1,5 +1,4 @@
 import { UserRepository } from "../../../infra/repositories/user-repository";
-import { UserStatusEnum } from "../enums/user-status-enum";
 import { SaveUserRepository } from "../gateways/repositories/save-user-repository";
 
 export class CreateUserUseCase {
@@ -43,7 +42,6 @@ export namespace CreateUserUseCase {
     id: string;
     name: string;
     email: string;
-    status: UserStatusEnum;
     created_at: Date;
     updated_at: Date;
   }

@@ -1,11 +1,9 @@
 import { v4 as uuidV4 } from "uuid";
-import { UserStatusEnum } from "../enums/user-status-enum";
 
 export class UserEntity implements UserEntity.BaseFields {
   private _id!: string;
   private _name: string;
   private _email: string;
-  private _status: UserStatusEnum;
   private _created_at: Date;
   private _updated_at: Date;
 
@@ -19,10 +17,6 @@ export class UserEntity implements UserEntity.BaseFields {
 
   get email() {
     return this._email;
-  }
-
-  get status() {
-    return this._status;
   }
 
   get created_at() {
@@ -46,7 +40,6 @@ export class UserEntity implements UserEntity.BaseFields {
       id: this._id,
       name: this._name,
       email: this._email,
-      status: this._status,
       created_at: this._created_at,
       updated_at: this._updated_at,
     };
@@ -59,7 +52,6 @@ export class UserEntity implements UserEntity.BaseFields {
 
     this._name = init.name;
     this._email = init.email;
-    this._status = init.status ?? UserStatusEnum.REGISTERED;
     this._created_at = init.created_at ?? new Date(Date.now());
     this._updated_at = init.created_at ?? new Date(Date.now());
   }
@@ -70,7 +62,6 @@ export namespace UserEntity {
     id: string;
     name: string;
     email: string;
-    status: UserStatusEnum;
     created_at: Date;
     updated_at: Date;
   }
@@ -83,7 +74,6 @@ export namespace UserEntity {
       id?: string;
       name?: string;
       email?: string;
-      status?: UserStatusEnum;
       created_at?: Date;
       updated_at?: Date;
     }
