@@ -2,25 +2,31 @@ import { DebtsRepository } from "../../../infra/repositories/debt-repository";
 import { UserRepository } from "../../../infra/repositories/user-repository";
 import { DebtEntity } from "../entities/debt-entity";
 
-export class FindAllDebtsByUserIdUseCase {
+export class FindOneDebtByUserIdUseCase {
   constructor(
     private userRepository: UserRepository,
     private debtRepository: DebtsRepository
   ) {}
 
-  async execute(user_id): Promise<FindAllDebtsByUserIdUseCase.Response> {
+  async execute(id, user_id): Promise<FindAllDebtsByUserIdUseCase.Response> {
     const user = await this.userRepository.findOne({ id: user_id });
 
     if (!user) {
       throw new Error("User not found.");
     }
 
-    return await this.debtRepository.find({
-      where: { user_id },
+    const debt = await this.debtRepository.findOne({
+      where: { id, user_id },
     });
+
+    if (!debt) {
+      throw new Error("Debt not found.");
+    }
+
+    return debt;
   }
 }
 
 export namespace FindAllDebtsByUserIdUseCase {
-  export type Response = DebtEntity.BaseFields[];
+  export type Response = DebtEntity.BaseFields;
 }
