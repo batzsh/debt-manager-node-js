@@ -104,4 +104,4 @@ dist
 .tern-port
 
 # Database
-./src/infra/database/**.sqlite
+src/infra/database/**.sqlite
